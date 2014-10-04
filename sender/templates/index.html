@@ -1,0 +1,43 @@
+{% from "helpers.html" import render_field %}
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type=text/javascript>
+    $(function() {
+        $('#country').change(function() {
+            $('#city').html('');
+            $('#city').append($('<option>', {value: 'loading', text: 'Loading...'}));
+            $.getJSON($SCRIPT_ROOT + '/_get_cities/' + $('#country').val(), function(response) {
+                $('#city').html('')
+                citiesLength = response.cities.length;
+                for (var i = 0; i < citiesLength; i++) {
+                    $("#city").append($('<option>', {value: response.cities[i], text: response.cities[i]}));
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<form method="POST" action="/">
+    {{ form.hidden_tag() }}
+    {{ render_field(form.first_name) }}
+    {{ render_field(form.last_name) }}
+    {{ render_field(form.email) }}
+    {{ render_field(form.confirm_email) }}
+    {{ render_field(form.country) }}
+    {{ render_field(form.city) }}
+    <input type="submit" value="Go">
+</form>
