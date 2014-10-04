@@ -14,18 +14,18 @@ def bootstrap():
     mongo.db.cities.drop()
 
     # Add some data to MongoDB
-    countries = [{'name': 'Romania', 'abbrev': 'ro'},
-                 {'name': 'France', 'abbrev': 'fr'},
-                 {'name': 'Germany', 'abbrev': 'de'},
-                 {'name': 'Italy', 'abbrev': 'it'}]
-    cities = [{'name': 'Timisoara', 'country': 'ro'},
-              {'name': 'Constanta', 'country': 'ro'},
-              {'name': 'Paris', 'country': 'fr'},
-              {'name': 'Nice', 'country': 'fr'},
-              {'name': 'Nantes', 'country': 'fr'},
-              {'name': 'Berlin', 'country': 'de'},
-              {'name': 'Rome', 'country': 'it'},
-              {'name': 'Pisa', 'country': 'it'}]
+    countries = [{'name': 'Romania'},
+                 {'name': 'France'},
+                 {'name': 'Germany'},
+                 {'name': 'Italy'}]
+    cities = [{'name': 'Timisoara', 'country': 'Romania'},
+              {'name': 'Constanta', 'country': 'Romania'},
+              {'name': 'Paris', 'country': 'France'},
+              {'name': 'Nice', 'country': 'France'},
+              {'name': 'Nantes', 'country': 'France'},
+              {'name': 'Berlin', 'country': 'Germany'},
+              {'name': 'Rome', 'country': 'Italy'},
+              {'name': 'Pisa', 'country': 'Italy'}]
     mongo.db.countries.insert(countries)
     mongo.db.cities.insert(cities)
 
