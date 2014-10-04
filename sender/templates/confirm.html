@@ -1,10 +1,44 @@
-{{ data.first_name }}
-{{ data.last_name }}
-{{ data.email }}
-{{ data.confirm_email }}
-{{ data.country }}
-{{ data.city }}
-
-<form method="POST" action="{{ url_for('confirm') }}">
-    <input type="submit" value="Go">
-</form>
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "bootstrap/fixes.html" as fixes %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1>Just a little bit...</h1>
+                <p>We need you to have a second look on what is going to be sent. You want to send the correct things, right?</p>
+                <hr>
+                <table class="table table-striped">
+                    <tr>
+                        <td>First Name</td>
+                        <td>{{ data.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td>
+                        <td>{{ data.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>E-mail</td>
+                        <td>{{ data.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Country</td>
+                        <td>{{ data.country }}</td>
+                    </tr>
+                    <tr>
+                        <td>City</td>
+                        <td>{{ data.city }}</td>
+                    </tr>
+                </table>
+                <hr>
+                <form method="POST" action="{{ url_for('confirm') }}" class="form" role="form">
+                    <input class="btn btn-primary" value="That's perfect, send it!" type="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block head %}
+    {{super()}}
+    {{fixes.ie8()}}
+{% endblock %}

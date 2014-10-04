@@ -1,5 +1,6 @@
 from flask import (Flask, render_template, request, redirect, url_for,
                    session, jsonify, flash)
+from flask.ext.bootstrap import Bootstrap
 from flask.ext.pymongo import PyMongo
 from sendgrid import SendGridClient, Mail, SendGridError
 
@@ -10,6 +11,7 @@ mongo = PyMongo(app)
 sendgrid = SendGridClient(app.config['SENDGRID_USERNAME'],
                           app.config['SENDGRID_PASSWORD'],
                           raise_errors=True)
+Bootstrap(app)
 
 
 from forms import SendEmailForm

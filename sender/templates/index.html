@@ -1,43 +1,48 @@
-{% from "helpers.html" import render_field %}
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type=text/javascript>
-  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-</script>
-<script type=text/javascript>
-    $(function() {
-        $('#country').change(function() {
-            $('#city').html('');
-            $('#city').append($('<option>', {value: 'loading', text: 'Loading...'}));
-            $.getJSON($SCRIPT_ROOT + '/_get_cities/' + $('#country').val(), function(response) {
-                $('#city').html('')
-                citiesLength = response.cities.length;
-                for (var i = 0; i < citiesLength; i++) {
-                    $("#city").append($('<option>', {value: response.cities[i], text: response.cities[i]}));
-                }
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "bootstrap/fixes.html" as fixes %}
+{% block scripts %}
+    {{super()}}
+    <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        $(function() {
+            $('#country').change(function() {
+                $('#city').html('');
+                $('#city').append($('<option>', {value: 'loading', text: 'Loading...'}));
+                $.getJSON($SCRIPT_ROOT + '/_get_cities/' + $('#country').val(), function(response) {
+                    $('#city').html('')
+                    citiesLength = response.cities.length;
+                    for (var i = 0; i < citiesLength; i++) {
+                        $("#city").append($('<option>', {value: response.cities[i], text: response.cities[i]}));
+                    }
+                });
+                return false;
             });
-            return false;
         });
-    });
-</script>
-
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
-
-<form method="POST" action="/">
-    {{ form.hidden_tag() }}
-    {{ render_field(form.first_name) }}
-    {{ render_field(form.last_name) }}
-    {{ render_field(form.email) }}
-    {{ render_field(form.confirm_email) }}
-    {{ render_field(form.country) }}
-    {{ render_field(form.city) }}
-    <input type="submit" value="Go">
-</form>
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <div class="alert alert-info">
+                    {% for message in messages %}
+                      <p>{{ message }}</p>
+                    {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endwith %}
+                <h1>Heyo!</h1>
+                <p>This is the super-dooper sample-email-sender app. Just fill in the fields and we'll make sure to deliver this precious e-mail to the recipient you specify. Go have a try!</p>
+                <hr>
+                {{ wtf.quick_form(form, button_map={'submit_button': 'primary'}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block head %}
+    {{super()}}
+    {{fixes.ie8()}}
+{% endblock %}
